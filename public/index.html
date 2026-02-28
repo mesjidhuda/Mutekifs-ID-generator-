@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etikaf Admin | Identity Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="glass-nav no-print">
+        <div class="nav-container">
+            <div class="brand">
+                <div class="logo-icon"><i class="fas fa-mosque"></i></div>
+                <div class="brand-text">
+                    <span class="main-title">ETIKAF ADMIN</span>
+                    <span class="sub-title">Identity Suite</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <button type="button" onclick="window.print()" id="printBtn" class="premium-btn print-btn" disabled>
+                    <i class="fas fa-print"></i> <span>Export Registry</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content no-print">
+        <section class="hero-section">
+            <h1>Identity Batch Processing</h1>
+            <p>Deploy secure, QR-integrated identity cards for the 2026 Etikaf Season.</p>
+        </section>
+
+        <div class="glass-panel">
+            <form id="uploadForm">
+                <div class="upload-grid">
+                    <div class="upload-card">
+                        <input type="file" name="excel" id="excelFile" accept=".xlsx, .xls" required>
+                        <label for="excelFile" id="excelLabel">
+                            <div class="icon-circle"><i class="fas fa-table"></i></div>
+                            <h3>Registry Data</h3>
+                            <p>Select Excel Document</p>
+                            <span class="file-status">No file chosen</span>
+                        </label>
+                    </div>
+
+                    <div class="upload-card">
+                        <input type="file" name="zip" id="zipFile" accept=".zip" required>
+                        <label for="zipFile" id="zipLabel">
+                            <div class="icon-circle"><i class="fas fa-file-zipper"></i></div>
+                            <h3>Biometrics</h3>
+                            <p>Select Photo ZIP</p>
+                            <span class="file-status">No file chosen</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="action-footer">
+                    <button type="submit" id="genBtn" class="generate-btn">
+                        <span id="btnText">Initiate Generation</span>
+                        <div id="loader" class="hidden">
+                            <div class="scan-line"></div>
+                            <span>Processing Assets...</span>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="displayArea" class="display-area">
+        <div class="display-header no-print hidden" id="resultsInfo">
+            <div class="header-line"></div>
+            <h3 style=" margin-left: 40px;">Generated Previews</h3>
+        </div>
+        <div id="output" class="id-results-grid"></div>
+    </div>
+
+    <script>
+        const handleFiles = (inputId, labelId) => {
+            document.getElementById(inputId).addEventListener('change', e => {
+                const label = document.getElementById(labelId);
+                const status = label.querySelector('.file-status');
+                if(e.target.files.length > 0) {
+                    status.textContent = e.target.files[0].name;
+                    label.classList.add('selected');
+                }
+            });
+        };
+        handleFiles('excelFile', 'excelLabel');
+        handleFiles('zipFile', 'zipLabel');
+
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btnText = document.getElementById('btnText');
+            const loader = document.getElementById('loader');
+            const genBtn = document.getElementById('genBtn');
+            const resultsInfo = document.getElementById('resultsInfo');
+
+            btnText.classList.add('hidden');
+            loader.classList.remove('hidden');
+            genBtn.disabled = true;
+
+            try {
+                const res = await fetch('/process', { method: 'POST', body: new FormData(e.target) });
+                const result = await res.json();
+
+                if (result.success) {
+                    renderCards(result.data);
+                    document.getElementById('printBtn').disabled = false;
+                    resultsInfo.classList.remove('hidden');
+                    resultsInfo.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (err) {
+                alert('Connection to Termux server lost.');
+            } finally {
+                btnText.classList.remove('hidden');
+                loader.classList.add('hidden');
+                genBtn.disabled = false;
+            }
+        });
+
+        function renderCards(records) {
+            const container = document.getElementById('output');
+            container.innerHTML = '';
+            records.forEach(rec => {
+                const initials = rec.full_name ? rec.full_name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2) : 'ID';
+                // Note: rec.age is available here but we do not display it per your instructions.
+                const cardHTML = `
+                <div class="id-print-unit">
+                    <div class="id-card-front">
+                        <div class="card-glass-overlay"></div>
+                        <div class="c-header">
+                            <div class="c-logo"><i class="fas fa-mosque"></i> ETIKAF PLATFORM</div>
+                            <div class="c-badge">MUTEKIF</div>
+                        </div>
+                        <div class="c-body">
+                            <div class="c-left">
+                                <div class="c-photo">
+                                    ${rec.photoBase64 ? `<img src="${rec.photoBase64}">` : `<span>${initials}</span>`}
+                                </div>
+                                <div class="c-info">
+                                    <div class="c-name">${rec.full_name}</div>
+                                    <div class="c-sub">ID: ${rec.id_number} <span class="c-divider">|</span> ${rec.gender || 'N/A'}</div>
+                                    <div class="c-ref">ETK-2026-${rec.id_number}</div>
+                                </div>
+                            </div>
+                            <div class="c-right">
+                                <div class="c-qr"><img src="${rec.qrBase64}"></div>
+                            </div>
+                        </div>
+                        <div class="c-footer">
+                            <span style=" font-weight: bold;">MASJID AL-HUDA</span>
+                            <span>EXP: ${rec.expiry_date}</span>
+                        </div>
+                    </div>
+                </div>`;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+    </script>
+</body>
+</html>

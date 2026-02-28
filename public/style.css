@@ -1,0 +1,582 @@
+:root {
+    --primary: #1e3d1f;
+    --accent: #d4af37;
+    --bg-dark: #0d130d;
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+
+    /* Typography Variables - Desktop Base */
+    --fs-h1: 2.3rem;
+    --fs-hero-p: 0.8rem;
+    --fs-nav-title: 0.8rem;
+    --fs-nav-sub: 0.4rem;
+    --fs-btn: 0.9rem;
+    --fs-card-name: 13.7px;
+    --fs-card-details: 7.7px;
+    --fs-card-ref: 6.7px;
+    --fs-label-head: 0.9rem;
+    --fs-label-status: 0.8rem;
+
+    --gender-spacing: 8px;
+
+    /* Spacing */
+    --mobile-padding: 20px;
+    --tablet-padding: 40px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    background-image: radial-gradient(
+        circle at top right,
+        #2c5f2d 0%,
+        transparent 40%
+    );
+    background-attachment: fixed;
+    font-family: "Inter", sans-serif;
+    color: #fff;
+    line-height: 1.6;
+    zoom: 0.85;
+}
+
+/* Glass Navbar */
+.glass-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(13, 19, 13, 0.7);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem 5%;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.logo-icon {
+    background: var(--accent);
+    color: #000;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+}
+.main-title {
+    display: block;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--accent);
+    font-size: 1.1rem;
+}
+.sub-title {
+    display: block;
+    font-size: 0.7rem;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.premium-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+.premium-btn:disabled {
+    opacity: 0.3;
+}
+
+/* Main Section */
+.main-content {
+    padding: 60px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+.hero-section h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #fff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.hero-section p {
+    font-size: 1.1rem;
+    opacity: 0.6;
+    margin-bottom: 50px;
+}
+
+/* Upload Glass Panel */
+.glass-panel {
+    background: var(--glass);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    border-radius: 32px;
+    padding: 50px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.upload-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+.upload-card input {
+    display: none;
+}
+.upload-card label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px dashed var(--glass-border);
+    border-radius: 24px;
+    cursor: pointer;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.upload-card label:hover {
+    border-color: var(--accent);
+    background: rgba(212, 175, 55, 0.05);
+    transform: translateY(-5px);
+}
+.upload-card label.selected {
+    border-style: solid;
+    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--accent);
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--accent);
+}
+.file-status {
+    margin-top: 15px;
+    font-size: 0.8rem;
+    opacity: 0.5;
+    color: var(--accent);
+}
+
+.generate-btn {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* ID Design - Single Sided, QR Right */
+.id-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(3.5in, 1fr));
+    gap: 30px;
+    padding: 50px 5%;
+    justify-items: center;
+}
+
+.id-print-unit {
+    width: 3.375in;
+    height: 2.125in;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.id-card-front {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #2b2b2b,#1B2A49);
+    border: 1px solid var(--glass-border);
+}
+
+.c-header {
+    padding: 10px 15px;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.c-logo {
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--accent);
+}
+.c-badge {
+    background: var(--accent);
+    color: #000;
+    font-size: 7px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 900;
+}
+
+.c-body {
+    flex: 1;
+    display: flex;
+    padding: 15px;
+    align-items: center;
+    justify-content: space-between;
+}
+.c-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.c-photo {
+    width: 65px;
+    height: 80px;
+    background: #fff;
+    border: 2.5px solid var(--accent);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.c-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.c-name {
+    font-family: "Playfair Display", serif;
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 2px;
+}
+.c-sub {
+    font-size: 8px;
+    opacity: 0.8;
+}
+.c-ref {
+    font-size: 7px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 3px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 6px;
+}
+
+.c-qr {
+    width: 68px;
+    height: 68px;
+    background: #fff;
+    padding: 5px;
+    border-radius: 6px;
+}
+.c-qr img {
+    width: 100%;
+    height: 100%;
+}
+
+.c-footer {
+    padding: 6px 15px;
+    font-size: 7px;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--glass-border);
+}
+
+/* Loader Scanline */
+.hidden {
+    display: none;
+}
+.scan-line {
+    height: 4px;
+    background: #000;
+    width: 50%;
+    border-radius: 2px;
+    animation: scan 1s infinite alternate;
+}
+@keyframes scan {
+    from {
+        transform: translateX(-50%);
+    }
+    to {
+        transform: translateX(150%);
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    background-image: radial-gradient(
+        circle at top right,
+        #2c5f2d 0%,
+        transparent 40%
+    );
+    background-attachment: fixed;
+    font-family: "Inter", sans-serif;
+    color: #fff;
+    line-height: 1.6;
+}
+
+/* Glass Navbar */
+.glass-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(13, 19, 13, 0.7);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem 5%;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-title {
+    display: block;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--accent);
+    font-size: var(--fs-nav-title);
+}
+
+.sub-title {
+    display: block;
+    font-size: var(--fs-nav-sub);
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.premium-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-size: 0.9rem; /* Slightly smaller than main buttons */
+}
+
+/* Add these rules to the bottom of your CSS file */
+.c-sub {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.c-divider {
+    margin: 0 var(--gender-spacing);
+    opacity: 0.5;
+    font-weight: 300;
+    color: var(--accent);
+}
+
+/* This ensures the Gender text inherits the same 
+   style as the ID number but remains distinct */
+.c-sub span:last-child {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Main Section */
+.main-content {
+    padding: 60px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hero-section h1 {
+    font-size: var(--fs-h1);
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #fff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-section p {
+    font-size: var(--fs-hero-p);
+    opacity: 0.6;
+    margin-bottom: 50px;
+}
+
+/* Upload Glass Panel */
+.glass-panel {
+    background: var(--glass);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    border-radius: 32px;
+    padding: 50px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.upload-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.upload-card label h3 {
+    font-size: var(--fs-label-head);
+}
+
+.file-status {
+    margin-top: 15px;
+    font-size: var(--fs-label-status);
+    opacity: 0.5;
+    color: var(--accent);
+}
+
+.generate-btn {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 16px;
+    font-size: var(--fs-btn);
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* ID Design */
+.c-name {
+    font-family: "Playfair Display", serif;
+    font-size: var(--fs-card-name);
+    color: var(--accent);
+    margin-bottom: 2px;
+}
+
+.c-sub {
+    font-size: var(--fs-card-details);
+    opacity: 0.8;
+}
+
+.c-ref {
+    font-size: var(--fs-card-ref);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 3px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 6px;
+}
+
+.c-footer {
+    padding: 6px 15px;
+    font-size: var(--fs-card-ref);
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--glass-border);
+}
+
+/* --- RESPONSIVE TYPOGRAPHY --- */
+
+@media (max-width: 1024px) {
+    :root {
+        --fs-h1: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --fs-h1: 1.8rem;
+        --fs-hero-p: 0.95rem;
+        --fs-nav-title: 0.9rem;
+        --fs-btn: 1rem;
+        zoom: 0.8;
+    }
+
+    .sub-title {
+        display: none;
+    }
+    .glass-panel {
+        padding: var(--mobile-padding);
+    }
+    .id-print-unit {
+        transform: scale(0.9);
+        margin: -10px 0;
+    }
+}
+
+@media (max-width: 380px) {
+    :root {
+        --fs-h1: 1.5rem;
+    }
+    .id-print-unit {
+        transform: scale(0.85);
+    }
+}
+
+/* Print Handling */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 10mm;
+    }
+    .no-print {
+        display: none !important;
+    }
+    body {
+        background: #fff !important;
+        zoom: 1.6;
+    }
+    .id-results-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10mm;
+        padding: 0;
+    }
+    .id-print-unit {
+        border: 1px solid #ddd;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
