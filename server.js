@@ -78,7 +78,7 @@ app.post('/process', upload.fields([{ name: 'excel' }, { name: 'zip' }]), async 
 
             return {
                 ...row,
-                expiry_date: cleanEntry +" UP TO " + cleanDate ,
+                expiry_date: cleanEntry ,
                 gender: row.gender || "N/A", // Ensure gender is passed to front-end for UI
                 age: row.age || "N/A",       // Age passed but not rendered in HTML
                 photoBase64: photoMap[idKey.toLowerCase()] || null, 
