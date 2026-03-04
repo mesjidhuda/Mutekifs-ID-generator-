@@ -62,12 +62,23 @@ app.post('/process', upload.fields([{ name: 'excel' }, { name: 'zip' }]), async 
             // --- QR DATA PAYLOAD: Including all data from Excel ---
             const qrPayload = JSON.stringify({
                 id: idKey,
-                name: row.full_name,
+                name: (function(name) {
+    return name
+      ? name
+          .toLowerCase()
+          .trim()
+          .split(/\s+/)
+          .map(word =>
+            word.charAt(0).toUpperCase() + word.slice(1)
+          )
+          .join(" ")
+      : "N/A";
+  })(row.full_name),
                 gender: row.gender || "N/A",  // Added
                 age: row.age || "N/A",        // Added (QR only)
                 role: row.role || "Mutekif",
                 org: row.organization || "Mesjid Huda",
-                expiry: cleanEntry +" UP TO " + cleanDate 
+                expiry: cleanDate 
             });
             
             const qrCodeBase64 = await QRCode.toDataURL(qrPayload, {
@@ -78,7 +89,7 @@ app.post('/process', upload.fields([{ name: 'excel' }, { name: 'zip' }]), async 
 
             return {
                 ...row,
-                expiry_date: cleanEntry ,
+                expiry_date: cleanDate ,
                 gender: row.gender || "N/A", // Ensure gender is passed to front-end for UI
                 age: row.age || "N/A",       // Age passed but not rendered in HTML
                 photoBase64: photoMap[idKey.toLowerCase()] || null, 
